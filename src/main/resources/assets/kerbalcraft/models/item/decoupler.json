@@ -1,9 +1,9 @@
 {
   "parent": "minecraft:block/block",
   "textures": {
-    "#metal": "minecraft:block/iron_block",
-    "#body": "minecraft:block/light_gray_concrete",
-    "#dark": "minecraft:block/deepslate"
+    "#metal": "kerbalcraft:item/brushed_metal",
+    "#body": "kerbalcraft:item/decoupler_body",
+    "#dark": "kerbalcraft:item/dark_alloy"
   },
   "elements": [
     {

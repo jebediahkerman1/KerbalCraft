@@ -1,10 +1,10 @@
 {
   "parent": "minecraft:block/block",
   "textures": {
-    "#shell": "minecraft:block/light_gray_concrete",
-    "#metal": "minecraft:block/iron_block",
-    "#window": "minecraft:block/light_blue_stained_glass",
-    "#dark": "minecraft:block/deepslate"
+    "#shell": "kerbalcraft:item/white_enamel",
+    "#metal": "kerbalcraft:item/brushed_metal",
+    "#window": "kerbalcraft:item/blue_glass",
+    "#dark": "kerbalcraft:item/dark_alloy"
   },
   "elements": [
     {

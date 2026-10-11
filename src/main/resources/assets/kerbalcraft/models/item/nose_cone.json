@@ -1,9 +1,9 @@
 {
   "parent": "minecraft:block/block",
   "textures": {
-    "#body": "minecraft:block/light_gray_concrete",
-    "#metal": "minecraft:block/iron_block",
-    "#tip": "minecraft:block/white_concrete"
+    "#body": "kerbalcraft:item/cone_white",
+    "#metal": "kerbalcraft:item/brushed_metal",
+    "#tip": "kerbalcraft:item/white_enamel"
   },
   "elements": [
     {
