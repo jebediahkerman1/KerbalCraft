@@ -3,6 +3,7 @@ package com.kerbalcraft.event;
 import com.kerbalcraft.KerbalCraft;
 import com.kerbalcraft.registry.ModItems;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
@@ -15,6 +16,7 @@ public final class SpaceSuitEvents {
     private static final String OXYGEN_KEY = "KerbalCraftOxygenTicks";
     public static final int MAX_OXYGEN_TICKS = 6000; // Five minutes at 20 ticks per second.
     private static final double SPACE_ALTITUDE = 200.0D;
+    private static final ResourceLocation MOON = new ResourceLocation(KerbalCraft.MOD_ID, "moon");
 
     private SpaceSuitEvents() {
     }
@@ -34,7 +36,8 @@ public final class SpaceSuitEvents {
         boolean hasHelmetAndTank = helmet.is(ModItems.SPACE_HELMET.get())
                 && tank.is(ModItems.AIR_TANK.get());
         boolean inWater = player.isEyeInFluid(FluidTags.WATER);
-        boolean inSpace = player.getY() >= SPACE_ALTITUDE;
+        boolean inSpace = player.getY() >= SPACE_ALTITUDE
+                || player.level().dimension().location().equals(MOON);
 
         // High altitude has a low-gravity environment. Counter part of vanilla gravity
         // while airborne; rockets keep using their own flight model.
