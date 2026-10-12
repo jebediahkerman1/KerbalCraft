@@ -56,5 +56,11 @@ public final class RocketTelemetryOverlay {
         event.getGuiGraphics().drawString(minecraft.font,
                 Component.literal("Fuel tanks: " + nearest.getTankCount()),
                 x, y + 48, 0xFFFFFF, true);
+        event.getGuiGraphics().drawString(minecraft.font,
+                Component.literal(String.format("Throttle: %.0f%%", nearest.getThrottle() * 100.0F)),
+                x, y + 60, 0xFFD580, true);
+        event.getGuiGraphics().drawString(minecraft.font,
+                Component.literal("R/F throttle | Arrows steer | X stage"),
+                x, y + 72, 0xFFFFFF, true);
     }
 }
