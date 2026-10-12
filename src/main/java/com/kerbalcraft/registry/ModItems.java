@@ -26,6 +26,11 @@ public final class ModItems {
             () -> new Item(new Item.Properties().stacksTo(1))
     );
 
+    public static final RegistryObject<Item> SRB = ITEMS.register(
+            "srb",
+            () -> new Item(new Item.Properties().stacksTo(1))
+    );
+
     public static final RegistryObject<Item> NOSE_CONE = ITEMS.register(
             "nose_cone",
             () -> new Item(new Item.Properties().stacksTo(16))
