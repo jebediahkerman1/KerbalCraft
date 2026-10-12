@@ -26,6 +26,9 @@ public final class RocketTelemetryOverlay {
         double nearestDistance = 96.0D * 96.0D;
         for (RocketEntity rocket : minecraft.level.getEntitiesOfClass(
                 RocketEntity.class, minecraft.player.getBoundingBox().inflate(96.0D))) {
+            if (rocket.isStageDebris()) {
+                continue;
+            }
             double distance = minecraft.player.distanceToSqr(rocket);
             if (distance < nearestDistance) {
                 nearest = rocket;
