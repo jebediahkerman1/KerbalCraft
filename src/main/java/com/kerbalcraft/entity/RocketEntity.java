@@ -15,6 +15,7 @@ import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
 
@@ -190,6 +191,19 @@ public class RocketEntity extends Entity {
         }
 
         Vec3 velocity = getDeltaMovement();
+        if (level().isClientSide && getFuelTicks() > 0 && getThrottle() > 0.0F
+                && velocity.lengthSqr() > 0.0001D) {
+            Vec3 exhaustDirection = velocity.normalize();
+            Vec3 exhaust = position().subtract(exhaustDirection.scale(0.85D));
+            level().addParticle(ParticleTypes.FLAME, exhaust.x, exhaust.y, exhaust.z,
+                    -exhaustDirection.x * 0.04D, -exhaustDirection.y * 0.04D,
+                    -exhaustDirection.z * 0.04D);
+            if (random.nextInt(4) == 0) {
+                level().addParticle(ParticleTypes.SMOKE, exhaust.x, exhaust.y, exhaust.z,
+                        -exhaustDirection.x * 0.02D, -exhaustDirection.y * 0.02D,
+                        -exhaustDirection.z * 0.02D);
+            }
+        }
         if (velocity.lengthSqr() > 0.0001D) {
             setYRot((float) (Math.atan2(-velocity.x, velocity.z) * (180.0D / Math.PI)));
             setXRot((float) (-Math.atan2(velocity.y,
