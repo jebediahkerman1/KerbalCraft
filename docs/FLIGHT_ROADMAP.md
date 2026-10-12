@@ -3,36 +3,34 @@
 ## Current prototype
 
 - Inventory-based assembly from Command Pod, Engine, Fuel Tanks, and optional Nose Cone/Decoupler.
-- Server-authoritative rocket entity.
+- Server-authoritative rocket entity and launch ownership.
+- Server-validated control packets: throttle, yaw, pitch, and stage action.
 - Basic thrust, fuel burn, gravity, and collision cleanup.
-- In-flight telemetry HUD when a rocket is nearby.
+- In-flight telemetry HUD with altitude, speed, fuel, tank count, throttle, and control hints.
 - Rocket model displays the fuel tanks included in the assembly.
+- Initial stage action ejects one fuel-tank item and removes 10 seconds of fuel, if a decoupler is present and multiple tanks remain.
 
-## Next engineering milestones
+## Remaining engineering milestones
 
-1. **Controls and networking**
-   - Add server-validated input packets for throttle, pitch, yaw, and staging.
-   - Only allow control from the pilot/owner of a rocket.
-   - Rate-limit packets and reject stale or invalid entity IDs.
-2. **Staging**
-   - Store a rocket's stage layout instead of a single boolean decoupler flag.
-   - Separate the upper stage and transfer velocity on staging.
-   - Burn fuel from the active stage only.
-3. **Rocket editor**
+1. **True multistage rockets**
+   - Store a stage layout instead of a single decoupler flag.
+   - Spawn independent discarded-stage entities and transfer velocity at separation.
+   - Burn fuel from the active stage only and allow later stages to ignite.
+2. **Rocket editor**
    - Place parts in slots and validate engine/tank/pod compatibility before launch.
    - Persist the design as structured entity/item data.
-4. **Flight model**
+3. **Flight model**
    - Expose thrust and fuel capacity as part properties.
-   - Add throttle, acceleration limits, aerodynamic drag, and better collision/landing behavior.
+   - Add throttle-aware acceleration limits, aerodynamic drag, and better collision/landing behavior.
    - Avoid hard-coded single-engine and single-fuel values.
-5. **Flight computer**
-   - Add altitude, vertical speed, horizontal speed, fuel, and stage indicators.
-   - Add launch countdown and engine ignition state.
-6. **Testing**
+4. **Flight computer**
+   - Add vertical and horizontal speed, acceleration, stage indicators, launch countdown, and engine ignition state.
+5. **Testing and release**
    - Keep the automated Forge build green.
-   - Add smoke-test instructions for single-player and dedicated-server launches.
-   - Verify item consumption, saving/loading, and multiplayer replication.
+   - Test launch, controls, staging, item consumption, save/load, and multiplayer on Minecraft 1.20.1 / Forge 47.2.0.
+   - Verify model alignment, textures, and rendering in-game.
+   - Prepare a released mod jar and a pinned, tested modpack export.
 
 ## Design rule
 
-The server owns rocket physics and fuel state. Clients send control intentions, never authoritative positions or fuel values. Visual telemetry is client-side and reads synchronized entity state.
+The server owns rocket physics, fuel, ownership, and stage state. Clients send control intentions, never authoritative positions or fuel values. CI compilation is necessary but not a substitute for in-game testing.
