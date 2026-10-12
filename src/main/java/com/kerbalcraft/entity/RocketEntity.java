@@ -125,7 +125,7 @@ public class RocketEntity extends Entity {
     }
 
     private void activateStage() {
-        if (!hasDecoupler() || getTankCount() <= 1 || getFuelTicks() <= 0) {
+        if (!hasDecoupler() || getTankCount() <= 1) {
             return;
         }
 
