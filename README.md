@@ -37,7 +37,7 @@ Press **X** with a decoupler and at least two fuel tanks to split the rocket int
 - Craft an Air Tank from a Space Suit chestplate and a bucket, then equip it in the chest slot.
 - Equip the Space Helmet with the Air Tank to breathe underwater for up to five minutes; the tank refills in breathable air.
 - At Y=200 and above, the player enters the mod's space-altitude environment: reduced gravity, a gradual atmosphere-to-space fog transition, stars that fade in with altitude, and an on-screen altitude/status indicator. At Y=320 and above, the HUD marks orbit and shows a deliberately square, blocky Earth graphic.
-- Rockets experience extra atmospheric drag during descent in the Overworld and produce flame/smoke re-entry effects at high speed between Y=60 and Y=180.
+- Rocket drag and effective gravity transition gradually with altitude in the Overworld, reducing drag and gravity toward the orbit zone. Fast descents between Y=60 and Y=180 produce flame/smoke re-entry effects.
 - Surviving there requires the Space Helmet, Air Tank, Space Suit Leggings, and Space Suit Boots together.
 - Oxygen drains while in the space-altitude zone. An incomplete suit or an empty tank causes damage; the oxygen HUD shows the tank's remaining percentage.
 - The mod includes a basic Moon dimension with a flat rocky/gravel surface and a dark, starry sky. It is an early prototype, not a realistic lunar landscape.
