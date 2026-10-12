@@ -209,20 +209,6 @@ public class RocketEntity extends Entity {
             velocity = velocity.add(0.0D, -GRAVITY, 0.0D).scale(atmosphericDrag);
             setDeltaMovement(velocity);
 
-            // High-speed descent through the atmosphere produces a visible re-entry glow.
-            if (level().isClientSide && altitude >= 60.0D && altitude <= 180.0D
-                    && velocity.lengthSqr() > 0.36D) {
-                Vec3 heatTrail = position().subtract(velocity.normalize().scale(1.0D));
-                if (random.nextInt(2) == 0) {
-                    level().addParticle(ParticleTypes.FLAME, heatTrail.x, heatTrail.y, heatTrail.z,
-                            random.nextGaussian() * 0.025D, random.nextGaussian() * 0.025D,
-                            random.nextGaussian() * 0.025D);
-                }
-                if (random.nextInt(3) == 0) {
-                    level().addParticle(ParticleTypes.SMOKE, heatTrail.x, heatTrail.y, heatTrail.z,
-                            -velocity.x * 0.025D, -velocity.y * 0.025D, -velocity.z * 0.025D);
-                }
-            }
             move(MoverType.SELF, velocity);
 
             if (horizontalCollision || (verticalCollision && tickCount > 5)) {
@@ -239,6 +225,20 @@ public class RocketEntity extends Entity {
         }
 
         Vec3 velocity = getDeltaMovement();
+        double altitude = getY();
+        if (level().isClientSide && altitude >= 60.0D && altitude <= 180.0D
+                && velocity.lengthSqr() > 0.36D) {
+            Vec3 heatTrail = position().subtract(velocity.normalize().scale(1.0D));
+            if (random.nextInt(2) == 0) {
+                level().addParticle(ParticleTypes.FLAME, heatTrail.x, heatTrail.y, heatTrail.z,
+                        random.nextGaussian() * 0.025D, random.nextGaussian() * 0.025D,
+                        random.nextGaussian() * 0.025D);
+            }
+            if (random.nextInt(3) == 0) {
+                level().addParticle(ParticleTypes.SMOKE, heatTrail.x, heatTrail.y, heatTrail.z,
+                        -velocity.x * 0.025D, -velocity.y * 0.025D, -velocity.z * 0.025D);
+            }
+        }
         if (!isStageDebris() && level().isClientSide && getFuelTicks() > 0 && getThrottle() > 0.0F
                 && velocity.lengthSqr() > 0.0001D) {
             Vec3 exhaustDirection = velocity.normalize();
