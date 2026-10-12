@@ -30,7 +30,7 @@ The controls target the nearest rocket within 96 blocks. The server validates th
 - **Arrow keys** — steer and pitch the rocket
 - **X** — activate the decoupler stage
 
-The first staging implementation ejects one fuel-tank item and removes the corresponding fuel while the rocket has a decoupler and more than one tank (even after fuel is depleted). Full physical separation into independent upper and lower stages is still planned.
+Press **X** with a decoupler and at least two fuel tanks to split the rocket into an upper stage and a separate lower-stage debris rocket. The lower stage inherits the rocket's velocity and gets a small separation impulse; the upper stage keeps the remaining fuel and continues under your controls. Detached stages fall under gravity and are not targetable by flight controls.
 
 ### Space suit and oxygen
 
