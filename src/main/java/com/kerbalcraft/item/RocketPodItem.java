@@ -66,6 +66,7 @@ public class RocketPodItem extends Item {
 
         Vec3 spawn = player.position().add(look.scale(1.6D)).add(0.0D, 1.1D, 0.0D);
         rocket.moveTo(spawn.x, spawn.y, spawn.z, player.getYRot(), player.getXRot());
+        rocket.setOwner(player.getUUID());
         rocket.configure(20 * 10 * tankCount, tankCount, hasNose, hasDecoupler, look);
         rocket.setDeltaMovement(look.scale(0.25D));
         level.addFreshEntity(rocket);
