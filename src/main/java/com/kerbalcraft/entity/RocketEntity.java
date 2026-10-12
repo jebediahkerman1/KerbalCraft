@@ -31,6 +31,8 @@ public class RocketEntity extends Entity {
             SynchedEntityData.defineId(RocketEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> HAS_DECOUPLER =
             SynchedEntityData.defineId(RocketEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> STAGE_DEBRIS =
+            SynchedEntityData.defineId(RocketEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Float> THROTTLE =
             SynchedEntityData.defineId(RocketEntity.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Optional<UUID>> OWNER =
@@ -81,6 +83,20 @@ public class RocketEntity extends Entity {
 
     public boolean hasDecoupler() {
         return entityData.get(HAS_DECOUPLER);
+    }
+
+    public boolean isStageDebris() {
+        return entityData.get(STAGE_DEBRIS);
+    }
+
+    public void configureStageDebris(int tankCount, Vec3 inheritedVelocity) {
+        entityData.set(FUEL_TICKS, 0);
+        entityData.set(TANK_COUNT, Math.max(1, tankCount));
+        entityData.set(HAS_NOSE, false);
+        entityData.set(HAS_DECOUPLER, false);
+        entityData.set(STAGE_DEBRIS, true);
+        entityData.set(THROTTLE, 0.0F);
+        setDeltaMovement(inheritedVelocity);
     }
 
     public float getThrottle() {
@@ -138,16 +154,27 @@ public class RocketEntity extends Entity {
             return;
         }
 
-        Vec3 dropPosition = position().subtract(thrustDirection.scale(1.1D));
-        ItemEntity spentTank = new ItemEntity(level(), dropPosition.x, dropPosition.y,
-                dropPosition.z, new ItemStack(ModItems.FUEL_TANK.get()));
-        spentTank.setDeltaMovement(getDeltaMovement().subtract(thrustDirection.scale(0.18D))
-                .add(0.0D, -0.04D, 0.0D));
-        level().addFreshEntity(spentTank);
+        int originalTanks = getTankCount();
+        int droppedTanks = Math.max(1, originalTanks / 2);
+        int remainingTanks = Math.max(1, originalTanks - droppedTanks);
+        int originalFuel = getFuelTicks();
+        int droppedFuel = (int) Math.round(originalFuel * (droppedTanks / (double) originalTanks));
 
-        entityData.set(TANK_COUNT, Math.max(1, getTankCount() - 1));
-        entityData.set(FUEL_TICKS, Math.max(0, getFuelTicks() - 200));
+        Vec3 separationImpulse = thrustDirection.scale(0.12D);
+        Vec3 debrisVelocity = getDeltaMovement().subtract(separationImpulse)
+                .add(0.0D, -0.025D, 0.0D);
+        Vec3 debrisPosition = position().subtract(thrustDirection.scale(1.8D));
+        RocketEntity lowerStage = ModEntities.ROCKET.get().create(level());
+        if (lowerStage != null) {
+            lowerStage.moveTo(debrisPosition.x, debrisPosition.y, debrisPosition.z, getYRot(), getXRot());
+            lowerStage.configureStageDebris(droppedTanks, debrisVelocity);
+            level().addFreshEntity(lowerStage);
+        }
+
+        entityData.set(TANK_COUNT, remainingTanks);
+        entityData.set(FUEL_TICKS, Math.max(0, originalFuel - droppedFuel));
         entityData.set(HAS_DECOUPLER, false);
+        setDeltaMovement(getDeltaMovement().add(separationImpulse));
     }
 
     @Override
@@ -156,6 +183,7 @@ public class RocketEntity extends Entity {
         entityData.define(TANK_COUNT, 1);
         entityData.define(HAS_NOSE, false);
         entityData.define(HAS_DECOUPLER, false);
+        entityData.define(STAGE_DEBRIS, false);
         entityData.define(THROTTLE, 1.0F);
         entityData.define(OWNER, Optional.empty());
     }
@@ -168,7 +196,7 @@ public class RocketEntity extends Entity {
         if (!level().isClientSide) {
             Vec3 velocity = getDeltaMovement();
 
-            if (getFuelTicks() > 0 && getThrottle() > 0.0F) {
+            if (!isStageDebris() && getFuelTicks() > 0 && getThrottle() > 0.0F) {
                 velocity = velocity.add(thrustDirection.scale(THRUST * getThrottle()));
                 entityData.set(FUEL_TICKS, getFuelTicks() - 1);
             }
@@ -191,7 +219,7 @@ public class RocketEntity extends Entity {
         }
 
         Vec3 velocity = getDeltaMovement();
-        if (level().isClientSide && getFuelTicks() > 0 && getThrottle() > 0.0F
+        if (!isStageDebris() && level().isClientSide && getFuelTicks() > 0 && getThrottle() > 0.0F
                 && velocity.lengthSqr() > 0.0001D) {
             Vec3 exhaustDirection = velocity.normalize();
             Vec3 exhaust = position().subtract(exhaustDirection.scale(0.85D));
@@ -217,6 +245,7 @@ public class RocketEntity extends Entity {
         entityData.set(TANK_COUNT, Math.max(1, tag.getInt("TankCount")));
         entityData.set(HAS_NOSE, tag.getBoolean("HasNose"));
         entityData.set(HAS_DECOUPLER, tag.getBoolean("HasDecoupler"));
+        entityData.set(STAGE_DEBRIS, tag.getBoolean("StageDebris"));
         entityData.set(THROTTLE, tag.contains("Throttle") ? tag.getFloat("Throttle") : 1.0F);
         if (tag.hasUUID("Owner")) {
             ownerId = tag.getUUID("Owner");
@@ -240,6 +269,7 @@ public class RocketEntity extends Entity {
         tag.putInt("TankCount", getTankCount());
         tag.putBoolean("HasNose", hasNoseCone());
         tag.putBoolean("HasDecoupler", hasDecoupler());
+        tag.putBoolean("StageDebris", isStageDebris());
         tag.putFloat("Throttle", getThrottle());
         if (ownerId != null) {
             tag.putUUID("Owner", ownerId);
