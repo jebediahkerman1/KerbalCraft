@@ -24,9 +24,15 @@ public class RocketRenderer extends EntityRenderer<RocketEntity> {
         poseStack.mulPose(Axis.YP.rotationDegrees(-rocket.getYRot()));
         poseStack.mulPose(Axis.XP.rotationDegrees(rocket.getXRot()));
 
-        renderPart(new ItemStack(ModItems.FUEL_TANK.get()), poseStack, buffer, packedLight, 0.0D);
-        renderPart(new ItemStack(ModItems.COMMAND_POD.get()), poseStack, buffer, packedLight, 0.85D);
-        renderPart(new ItemStack(ModItems.ROCKET_ENGINE.get()), poseStack, buffer, packedLight, -0.85D);
+        int tankCount = Math.max(1, Math.min(rocket.getTankCount(), 8));
+        for (int i = 0; i < tankCount; i++) {
+            renderPart(new ItemStack(ModItems.FUEL_TANK.get()), poseStack, buffer, packedLight,
+                    0.2D - (i * 0.42D));
+        }
+        renderPart(new ItemStack(ModItems.COMMAND_POD.get()), poseStack, buffer, packedLight,
+                0.85D + (Math.max(0, tankCount - 1) * 0.2D));
+        renderPart(new ItemStack(ModItems.ROCKET_ENGINE.get()), poseStack, buffer, packedLight,
+                -0.55D - (Math.max(0, tankCount - 1) * 0.42D));
 
         if (rocket.hasNoseCone()) {
             renderPart(new ItemStack(ModItems.NOSE_CONE.get()), poseStack, buffer, packedLight, 1.25D);
