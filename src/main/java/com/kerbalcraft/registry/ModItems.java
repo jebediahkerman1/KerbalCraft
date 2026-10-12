@@ -1,6 +1,7 @@
 package com.kerbalcraft.registry;
 
 import com.kerbalcraft.KerbalCraft;
+import com.kerbalcraft.item.RocketPodItem;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -12,7 +13,7 @@ public final class ModItems {
 
     public static final RegistryObject<Item> COMMAND_POD = ITEMS.register(
             "command_pod",
-            () -> new Item(new Item.Properties().stacksTo(1))
+            () -> new RocketPodItem(new Item.Properties().stacksTo(1))
     );
 
     public static final RegistryObject<Item> FUEL_TANK = ITEMS.register(
