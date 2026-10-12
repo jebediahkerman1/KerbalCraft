@@ -31,7 +31,7 @@ public final class SpaceTravelCommands {
                 .requires(source -> source.hasPermission(2))
                 .executes(context -> {
                     ServerPlayer player = context.getSource().getPlayerOrException();
-                    ServerLevel moon = player.server.getLevel(MOON_KEY);
+                    ServerLevel moon = context.getSource().getServer().getLevel(MOON_KEY);
                     if (moon == null) {
                         context.getSource().sendFailure(Component.literal(
                                 "The Moon dimension could not load. Check the KerbalCraft datapack files."));
@@ -46,7 +46,7 @@ public final class SpaceTravelCommands {
                 .requires(source -> source.hasPermission(2))
                 .executes(context -> {
                     ServerPlayer player = context.getSource().getPlayerOrException();
-                    ServerLevel overworld = player.server.getLevel(Level.OVERWORLD);
+                    ServerLevel overworld = context.getSource().getServer().getLevel(Level.OVERWORLD);
                     if (overworld == null) {
                         return 0;
                     }
