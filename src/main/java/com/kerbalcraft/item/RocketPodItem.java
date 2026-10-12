@@ -30,11 +30,14 @@ public class RocketPodItem extends Item {
 
         Inventory inventory = player.getInventory();
         int engineSlot = findSlot(inventory, ModItems.ROCKET_ENGINE.get());
-        int tankCount = countItems(inventory, ModItems.FUEL_TANK.get());
+        int srbSlot = findSlot(inventory, ModItems.SRB.get());
+        boolean hasSrb = srbSlot >= 0;
+        int tankCount = countItems(inventory, ModItems.FUEL_TANK.get()) + (hasSrb ? 1 : 0);
+        int propulsionSlot = engineSlot >= 0 ? engineSlot : srbSlot;
 
-        if (engineSlot < 0 || tankCount < 0 || tankCount == 0) {
+        if (propulsionSlot < 0 || tankCount == 0) {
             player.displayClientMessage(Component.literal(
-                    "Rocket assembly needs a Rocket Engine and a Fuel Tank.")
+                    "Rocket assembly needs a Rocket Engine or SRB, plus fuel.")
                     .withStyle(ChatFormatting.RED), true);
             return InteractionResultHolder.fail(podStack);
         }
@@ -47,7 +50,7 @@ public class RocketPodItem extends Item {
         }
 
         if (!player.getAbilities().instabuild) {
-            consumeOne(inventory, engineSlot);
+            consumeOne(inventory, propulsionSlot);
             consumeAll(inventory, ModItems.FUEL_TANK.get());
             if (hasNose) {
                 consumeOne(inventory, findSlot(inventory, ModItems.NOSE_CONE.get()));
@@ -72,7 +75,8 @@ public class RocketPodItem extends Item {
         level.addFreshEntity(rocket);
 
         serverPlayer.displayClientMessage(Component.literal(
-                "LIFTOFF! Fuel: " + (tankCount * 10) + " seconds. Engine thrust is active.")
+                "LIFTOFF! Fuel: " + (tankCount * 10) + " seconds. " +
+                        (hasSrb ? "SRB" : "Engine") + " thrust is active.")
                 .withStyle(ChatFormatting.GREEN), true);
 
         return InteractionResultHolder.sidedSuccess(podStack, false);
