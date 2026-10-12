@@ -18,6 +18,8 @@ import net.minecraftforge.network.NetworkHooks;
 public class RocketEntity extends Entity {
     private static final EntityDataAccessor<Integer> FUEL_TICKS =
             SynchedEntityData.defineId(RocketEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> TANK_COUNT =
+            SynchedEntityData.defineId(RocketEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> HAS_NOSE =
             SynchedEntityData.defineId(RocketEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> HAS_DECOUPLER =
@@ -32,8 +34,9 @@ public class RocketEntity extends Entity {
         this.noPhysics = false;
     }
 
-    public void configure(int fuelTicks, boolean hasNose, boolean hasDecoupler, Vec3 direction) {
+    public void configure(int fuelTicks, int tankCount, boolean hasNose, boolean hasDecoupler, Vec3 direction) {
         entityData.set(FUEL_TICKS, Math.max(0, fuelTicks));
+        entityData.set(TANK_COUNT, Math.max(1, tankCount));
         entityData.set(HAS_NOSE, hasNose);
         entityData.set(HAS_DECOUPLER, hasDecoupler);
         if (direction != null && direction.lengthSqr() > 0.001D) {
@@ -43,6 +46,10 @@ public class RocketEntity extends Entity {
 
     public int getFuelTicks() {
         return entityData.get(FUEL_TICKS);
+    }
+
+    public int getTankCount() {
+        return entityData.get(TANK_COUNT);
     }
 
     public boolean hasNoseCone() {
@@ -56,6 +63,7 @@ public class RocketEntity extends Entity {
     @Override
     protected void defineSynchedData() {
         entityData.define(FUEL_TICKS, 0);
+        entityData.define(TANK_COUNT, 1);
         entityData.define(HAS_NOSE, false);
         entityData.define(HAS_DECOUPLER, false);
     }
@@ -101,6 +109,7 @@ public class RocketEntity extends Entity {
     @Override
     protected void readAdditionalSaveData(CompoundTag tag) {
         entityData.set(FUEL_TICKS, tag.getInt("FuelTicks"));
+        entityData.set(TANK_COUNT, Math.max(1, tag.getInt("TankCount")));
         entityData.set(HAS_NOSE, tag.getBoolean("HasNose"));
         entityData.set(HAS_DECOUPLER, tag.getBoolean("HasDecoupler"));
         if (tag.contains("ThrustX")) {
@@ -112,6 +121,7 @@ public class RocketEntity extends Entity {
     @Override
     protected void addAdditionalSaveData(CompoundTag tag) {
         tag.putInt("FuelTicks", getFuelTicks());
+        tag.putInt("TankCount", getTankCount());
         tag.putBoolean("HasNose", hasNoseCone());
         tag.putBoolean("HasDecoupler", hasDecoupler());
         tag.putDouble("ThrustX", thrustDirection.x);
