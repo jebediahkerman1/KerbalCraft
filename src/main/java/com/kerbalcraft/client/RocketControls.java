@@ -69,6 +69,9 @@ public final class RocketControls {
             double nearestDistance = 96.0D * 96.0D;
             for (RocketEntity rocket : minecraft.level.getEntitiesOfClass(
                     RocketEntity.class, new AABB(minecraft.player.blockPosition()).inflate(96.0D))) {
+                if (!rocket.isOwnedBy(minecraft.player.getUUID())) {
+                    continue;
+                }
                 double distance = minecraft.player.distanceToSqr(rocket);
                 if (distance < nearestDistance) {
                     nearest = rocket;
