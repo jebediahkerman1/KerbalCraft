@@ -55,7 +55,7 @@ The compiled mod jar will be in `build/libs/`. GitHub Actions runs a build on pu
 
 ## Modpack planning
 
-See [docs/MODPACK.md](docs/MODPACK.md) for the Forge baseline, optional supporting mods, and release checklist. See [docs/FLIGHT_ROADMAP.md](docs/FLIGHT_ROADMAP.md) for remaining flight systems.
+See [docs/MODPACK.md](docs/MODPACK.md) for the Forge baseline, optional supporting mods, and release checklist. See [docs/FLIGHT_ROADMAP.md](docs/FLIGHT_ROADMAP.md) for remaining flight systems and [docs/IN_GAME_TEST_PLAN.md](docs/IN_GAME_TEST_PLAN.md) for the hands-on test checklist.
 
 The modpack is not yet an installable launcher export; it needs a released KerbalCraft jar and pinned, tested supporting-mod versions.
 
