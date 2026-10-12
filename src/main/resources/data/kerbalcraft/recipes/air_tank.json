@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "kerbalcraft:space_suit" },
+    { "item": "minecraft:bucket" }
+  ],
+  "result": {
+    "item": "kerbalcraft:air_tank",
+    "count": 1
+  }
+}
