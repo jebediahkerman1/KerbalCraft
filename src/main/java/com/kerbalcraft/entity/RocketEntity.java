@@ -201,8 +201,28 @@ public class RocketEntity extends Entity {
                 entityData.set(FUEL_TICKS, getFuelTicks() - 1);
             }
 
-            velocity = velocity.add(0.0D, -GRAVITY, 0.0D).scale(0.995D);
+            double altitude = getY();
+            boolean inAtmosphere = altitude < 180.0D;
+            double atmosphericDrag = inAtmosphere
+                    ? 0.985D + Math.max(0.0D, altitude) / 180.0D * 0.010D
+                    : 0.995D;
+            velocity = velocity.add(0.0D, -GRAVITY, 0.0D).scale(atmosphericDrag);
             setDeltaMovement(velocity);
+
+            // High-speed descent through the atmosphere produces a visible re-entry glow.
+            if (level().isClientSide && altitude >= 60.0D && altitude <= 180.0D
+                    && velocity.lengthSqr() > 0.36D) {
+                Vec3 heatTrail = position().subtract(velocity.normalize().scale(1.0D));
+                if (random.nextInt(2) == 0) {
+                    level().addParticle(ParticleTypes.FLAME, heatTrail.x, heatTrail.y, heatTrail.z,
+                            random.nextGaussian() * 0.025D, random.nextGaussian() * 0.025D,
+                            random.nextGaussian() * 0.025D);
+                }
+                if (random.nextInt(3) == 0) {
+                    level().addParticle(ParticleTypes.SMOKE, heatTrail.x, heatTrail.y, heatTrail.z,
+                            -velocity.x * 0.025D, -velocity.y * 0.025D, -velocity.z * 0.025D);
+                }
+            }
             move(MoverType.SELF, velocity);
 
             if (horizontalCollision || (verticalCollision && tickCount > 5)) {
