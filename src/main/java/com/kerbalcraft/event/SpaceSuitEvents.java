@@ -2,6 +2,7 @@ package com.kerbalcraft.event;
 
 import com.kerbalcraft.KerbalCraft;
 import com.kerbalcraft.registry.ModItems;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.FluidTags;
