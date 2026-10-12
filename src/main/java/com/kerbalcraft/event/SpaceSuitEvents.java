@@ -44,7 +44,7 @@ public final class SpaceSuitEvents {
         // High altitude has a low-gravity environment. Counter part of vanilla gravity
         // while airborne; rockets keep using their own flight model.
         if (inSpace && !player.onGround() && player.getVehicle() == null) {
-            player.setDeltaMovement(player.getDeltaMovement().add(0.0D, 0.045D, 0.0D));
+            player.setDeltaMovement(player.getDeltaMovement().add(0.0D, 0.067D, 0.0D));
             player.fallDistance = 0.0F;
         }
 
