@@ -73,6 +73,19 @@ Record the Minecraft version, Forge version, reproduction steps, and relevant la
 
 - Ascend through Y=120 to Y=320 and check that fog darkens gradually rather than switching abruptly.
 - Confirm stars progressively appear as altitude increases above Y=200.
-- At Y=320 and above, verify the HUD changes to the orbit label and draws a square Earth graphic.
-- Descend below the transition range and confirm the star field and orbital label disappear.
-- Verify the square Earth graphic is a HUD prototype; it is not yet a physical 3D planet in the world.
+- At Y=320 and above, verify the HUD changes to the orbit label and the 3D square Earth cube appears in front of the camera.
+- Descend below the transition range and confirm the star field, world-space Earth, and orbital label disappear.
+
+## Orbital flight and lunar craters
+
+- [ ] Launch vertically and confirm atmospheric drag fades with altitude instead of applying the same loss at every height.
+- [ ] At Y=320+, confirm the rocket bends under inverse-square gravity when it has horizontal velocity.
+- [ ] Compare vertical and horizontal speed against total speed in telemetry.
+- [ ] Check that estimated apoapsis rises while ascending and stops increasing once vertical speed is negative.
+- [ ] Confirm flight-state telemetry changes between atmospheric flight, orbital insertion, and orbital coast.
+- [ ] Look around at Y=320+ and confirm the square Earth is a 3D cube with green landmasses; verify terrain correctly occludes it when appropriate.
+- [ ] Visit /moon, explore several chunks, and confirm craters are bowl-shaped, stable after chunk reload, and do not expose void or remove the base layer.
+- [ ] Test Moon chunk loading in multiplayer and check for excessive chunk-load lag or repeated terrain edits.
+- [ ] Verify oxygen stays attached to the equipped Air Tank across save/reload, drains only in water/space, refills in breathable air, and causes damage when depleted in space.
+
+These are manual checks; no in-game run has been performed by the repository changes alone.
