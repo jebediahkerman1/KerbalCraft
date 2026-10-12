@@ -2,9 +2,9 @@
 
 A Minecraft Java 1.20.1 Forge mod inspired by Kerbal Space Program.
 
-## First milestone: rocket part items
+## Current prototype: assemble and fly
 
-This starter adds five registered items to the creative inventory:
+The mod registers five rocket parts in the Ingredients creative tab:
 
 - Command Pod
 - Fuel Tank
@@ -12,7 +12,41 @@ This starter adds five registered items to the creative inventory:
 - Nose Cone
 - Decoupler
 
-These are the first inventory items only. They are not yet attachable or flyable; assembly and flight physics will be added in later milestones.
+### Launching a rocket
+
+1. Obtain a Command Pod, at least one Fuel Tank, and a Rocket Engine.
+2. Optional: bring a Nose Cone and Decoupler to include them in the rocket.
+3. Hold the Command Pod and right-click.
+4. In Survival, the Command Pod, engine, optional parts, and all carried fuel tanks are consumed to assemble the rocket. Creative mode preserves parts.
+5. The rocket launches in the direction you're looking. Each fuel tank provides about 10 seconds of engine burn.
+6. When a rocket is nearby, the HUD shows altitude, speed, fuel time, tank count, and throttle.
+
+### Flight controls
+
+The controls target the nearest rocket within 96 blocks. The server validates that the player who launched it is the one controlling it.
+
+- **R** — increase throttle
+- **F** — decrease throttle
+- **Arrow keys** — steer and pitch the rocket
+- **X** — activate the decoupler stage
+
+Press **X** with a decoupler and at least two fuel tanks to split the rocket into an upper stage and a separate lower-stage debris rocket. The lower stage inherits the rocket's velocity and gets a small separation impulse; the upper stage keeps the remaining fuel and continues under your controls. Detached stages fall under gravity and are not targetable by flight controls.
+
+### Space suit and oxygen
+
+- Craft an Air Tank from a Space Suit chestplate and a bucket, then equip it in the chest slot.
+- Equip the Space Helmet with the Air Tank to breathe underwater for up to five minutes; the tank refills in breathable air.
+- At Y=200 and above, the player enters the mod's space-altitude environment: reduced gravity, a gradual atmosphere-to-space fog transition, stars that fade in with altitude, and an on-screen altitude/status indicator. At Y=320 and above, the HUD marks orbit and shows a deliberately square, blocky Earth graphic.
+- Rocket drag scales with estimated atmospheric density and speed. Above Y=320, rockets use inverse-square gravity around a saved local launch-area reference, allowing lateral velocity to curve. Telemetry estimates vertical apoapsis and shows vertical/horizontal speed plus insertion/coast state. Fast descents between Y=60 and Y=180 produce flame/smoke re-entry effects.
+- At orbital altitude, a blocky blue cube Earth with green landmasses is rendered as a world-space object in front of the camera. This remains a visual prototype, not a planet with terrain or collision.
+- Surviving there requires the Space Helmet, Air Tank, Space Suit Leggings, and Space Suit Boots together.
+- Oxygen drains while in the space-altitude zone. An incomplete suit or an empty tank causes damage; the oxygen HUD shows the tank's remaining percentage.
+- The Moon dimension now carves deterministic bowl-shaped craters into its rocky/gravel base and has a dark, starry sky. This is still a simple crater pass over flat terrain, not full lunar biome generation.
+- Operators can use `/moon` to travel to the Moon and `/earth` to return to the Overworld. These commands require operator permission.
+
+## Current limitations
+
+This is still an early flight prototype. Parts are assembled from inventory rather than snapped together in a construction UI. Orbital gravity is a simplified inverse-square model around a local launch-area reference, not a full planetary coordinate system or stable-orbit autopilot. The world-space cube Earth is camera-relative and has no terrain/collision. Moon craters are carved into a flat base rather than generated with full terrain noise. Re-entry has no thermal-damage simulation. The mod has not been verified in an actual Minecraft session or multiplayer server. CI compilation does not replace in-game testing.
 
 ## Target environment
 
@@ -23,20 +57,25 @@ These are the first inventory items only. They are not yet attachable or flyable
 
 ## Building locally
 
-This repository contains the source and Gradle build configuration. To build it, use a Gradle 8.x installation with Java 17, then run:
+Use Java 17 and Gradle 8.x:
 
 ```sh
 gradle build
 ```
 
-The compiled mod jar will be in `build/libs/`.
+The compiled mod jar will be in `build/libs/`. GitHub Actions runs a build on pushes and pull requests.
 
-If you prefer the standard Forge MDK workflow, download the Forge 1.20.1 - 47.2.0 MDK and use its Gradle wrapper files in this project.
+## Modpack planning
+
+See [docs/MODPACK.md](docs/MODPACK.md) for the Forge baseline, optional supporting mods, and release checklist. See [docs/FLIGHT_ROADMAP.md](docs/FLIGHT_ROADMAP.md) for remaining flight systems and [docs/IN_GAME_TEST_PLAN.md](docs/IN_GAME_TEST_PLAN.md) for the hands-on test checklist.
+
+The modpack is not yet an installable launcher export; it needs a released KerbalCraft jar and pinned, tested supporting-mod versions.
 
 ## Next milestones
 
-1. Custom textures and 3D item models.
-2. Placeable rocket assembly stand.
-3. Attach rocket parts into a stack.
-4. Fuel, engine ignition, thrust, and launch controls.
-5. Steering and basic flight physics.
+1. Verify the smooth atmosphere-to-orbit transition, star fade-in, square Earth HUD graphic, low gravity, and suit/oxygen survival in-game.
+2. Build a proper assembly stand/editor for physically arranging parts.
+3. Add true multi-stage engines with independent fuel and ignition.
+4. Improve part-specific fuel capacity, thrust, aerodynamic drag, and landing behavior.
+5. Improve actual orbital flight dynamics and replace the square Earth HUD graphic with a world-space Earth view.
+6. Test saving/loading, dedicated servers, multiplayer replication, and in-game visuals.

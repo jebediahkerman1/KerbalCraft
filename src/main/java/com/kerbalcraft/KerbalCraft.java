@@ -1,6 +1,8 @@
 package com.kerbalcraft;
 
+import com.kerbalcraft.registry.ModEntities;
 import com.kerbalcraft.registry.ModItems;
+import com.kerbalcraft.network.RocketNetwork;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -12,5 +14,7 @@ public class KerbalCraft {
     public KerbalCraft() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         ModItems.ITEMS.register(modEventBus);
+        ModEntities.ENTITY_TYPES.register(modEventBus);
+        RocketNetwork.register();
     }
 }

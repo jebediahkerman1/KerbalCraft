@@ -1,0 +1,26 @@
+{
+  "type": "kerbalcraft:moon",
+  "generator": {
+    "type": "minecraft:flat",
+    "settings": {
+      "biome": "minecraft:stony_peaks",
+      "lakes": false,
+      "features": false,
+      "layers": [
+        {
+          "block": "minecraft:bedrock",
+          "height": 1
+        },
+        {
+          "block": "minecraft:stone",
+          "height": 4
+        },
+        {
+          "block": "minecraft:gravel",
+          "height": 2
+        }
+      ],
+      "structure_overrides": []
+    }
+  }
+}

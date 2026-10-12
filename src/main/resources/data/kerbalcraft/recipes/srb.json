@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "kerbalcraft:fuel_tank"
+    },
+    {
+      "item": "kerbalcraft:rocket_engine"
+    }
+  ],
+  "result": {
+    "item": "kerbalcraft:srb",
+    "count": 1
+  }
+}
