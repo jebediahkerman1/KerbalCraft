@@ -24,8 +24,9 @@
 - The Overworld space-altitude zone begins at Y=200; stars fade in progressively through the atmosphere-to-orbit transition, and the HUD labels orbit at Y=320 with a square Earth graphic.
 - High-altitude players receive reduced effective gravity and require the full suit/oxygen setup.
 - The Moon is defined as a custom dimension with a flat rocky surface and dark sky; `/moon` and `/earth` operator commands provide prototype travel.
-- Rockets use extra drag in the Overworld atmosphere and display flame/smoke particles during fast descent between Y=60 and Y=180.
-- This is a first pass: stars are a screen-space overlay, the Moon terrain is flat, and re-entry has no heat-shield damage or temperature model. Verify all behavior in-game.
+- Rocket drag scales with estimated atmospheric density and speed. Above Y=320, rockets use inverse-square gravity relative to a saved local launch-area reference, allowing lateral motion to curve. Telemetry reports vertical/horizontal speed, a vertical apoapsis estimate, and insertion/coast state.
+- At orbital altitude, a blocky cube Earth is rendered in world space in front of the camera, with blue faces and green landmasses.
+- This is a first pass: stars are a screen-space overlay; Earth is a camera-relative cube rather than a physical planet; lunar craters are carved into flat base terrain; and re-entry has no heat-shield damage or temperature model. Verify all behavior in-game.
 
 ## Remaining engineering milestones
 
@@ -43,8 +44,8 @@
 4. **Flight computer**
    - Add vertical and horizontal speed, acceleration, stage indicators, launch countdown, and engine ignition state.
 5. **Improve Moon and space visuals**
-   - Replace the flat lunar surface with cratered terrain and lunar materials.
-   - Replace the HUD star overlay and square Earth graphic with proper sky rendering and a world-space Earth/Moon horizon.
+   - Replace the cratered flat lunar base with noise-based terrain, regolith, boulders, and varied crater sizes.
+   - Replace the camera-relative cube Earth prototype with a persistent planet position, far-distance scaling, and proper world-space rendering.
    - Add safe landing/return systems and world-specific gravity tuning.
 6. **Testing and release**
    - Keep the automated Forge build green.
