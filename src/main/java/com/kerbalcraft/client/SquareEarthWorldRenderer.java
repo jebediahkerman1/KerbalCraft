@@ -36,7 +36,8 @@ public final class SquareEarthWorldRenderer {
                 || minecraft.player.getY() < 320.0D) return;
 
         Vec3 camera = event.getCamera().getPosition();
-        Vec3 look = event.getCamera().getLookVector();
+        var lookVector = event.getCamera().getLookVector();
+        Vec3 look = new Vec3(lookVector.x(), lookVector.y(), lookVector.z()).normalize();
         Vec3 center = camera.add(look.scale(96.0D));
         double half = 12.0D;
 
@@ -46,7 +47,6 @@ public final class SquareEarthWorldRenderer {
         var matrix = pose.last().pose();
 
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
-        RenderSystem.disableTexture();
         RenderSystem.enableDepthTest();
         RenderSystem.disableCull();
         RenderSystem.enableBlend();
@@ -89,7 +89,6 @@ public final class SquareEarthWorldRenderer {
 
         RenderSystem.disableBlend();
         RenderSystem.enableCull();
-        RenderSystem.enableTexture();
         pose.popPose();
     }
 
