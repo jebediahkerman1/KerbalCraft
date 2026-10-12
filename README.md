@@ -30,7 +30,7 @@ The controls target the nearest rocket within 96 blocks. The server validates th
 - **Arrow keys** — steer and pitch the rocket
 - **X** — activate the decoupler stage
 
-The first staging implementation ejects one fuel-tank item and removes the corresponding fuel while the rocket has a decoupler, more than one tank, and fuel remaining. Full physical separation into independent upper and lower stages is still planned.
+The first staging implementation ejects one fuel-tank item and removes the corresponding fuel while the rocket has a decoupler and more than one tank (even after fuel is depleted). Full physical separation into independent upper and lower stages is still planned.
 
 ## Current limitations
 
