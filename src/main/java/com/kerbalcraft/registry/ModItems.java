@@ -43,6 +43,11 @@ public final class ModItems {
             () -> new ArmorItem(ArmorMaterials.IRON, ArmorItem.Type.CHESTPLATE, new Item.Properties().stacksTo(1))
     );
 
+    public static final RegistryObject<Item> AIR_TANK = ITEMS.register(
+            "air_tank",
+            () -> new Item(new Item.Properties().stacksTo(1))
+    );
+
     public static final RegistryObject<Item> SPACE_PANTS = ITEMS.register(
             "space_pants",
             () -> new ArmorItem(ArmorMaterials.IRON, ArmorItem.Type.LEGGINGS, new Item.Properties().stacksTo(1))
