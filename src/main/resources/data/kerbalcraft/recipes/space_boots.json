@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "minecraft:iron_boots" },
+    { "item": "minecraft:white_wool" }
+  ],
+  "result": {
+    "item": "kerbalcraft:space_boots",
+    "count": 1
+  }
+}
