@@ -70,11 +70,11 @@ public final class SpaceSuitEvents {
         if (needsOxygen && oxygen > 0) {
             oxygen--;
             tank.getOrCreateTag().putInt(OXYGEN_KEY, oxygen);
-            if (inSpace && oxygen == 1200 && player.tickCount % 20 == 0) {
+            if (inSpace && oxygen == 1200) {
                 player.displayClientMessage(Component.literal("OXYGEN LOW: 60 seconds remaining")
                         .withStyle(net.minecraft.ChatFormatting.YELLOW), true);
             }
-            if (inSpace && oxygen == 200 && player.tickCount % 20 == 0) {
+            if (inSpace && oxygen == 200) {
                 player.displayClientMessage(Component.literal("CRITICAL OXYGEN: 10 seconds remaining")
                         .withStyle(net.minecraft.ChatFormatting.RED), true);
             }
