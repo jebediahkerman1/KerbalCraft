@@ -10,6 +10,15 @@
 - Rocket model displays the fuel tanks included in the assembly.
 - Stage action splits the rocket into an independently moving upper stage and lower-stage debris entity; the lower stage inherits velocity and receives a separation impulse.
 
+## Space environment prototype
+
+- Y=200 and above is treated as the space-altitude zone.
+- Airborne players receive reduced effective gravity and have their fall distance reset while in the zone.
+- Client fog shifts to near-black at high altitude, except while the camera is inside a fluid.
+- A HUD indicator shows the space environment and current altitude.
+- The existing suit event enforces full suit equipment and oxygen use in this zone.
+- This is not yet a separate dimension: the Overworld sky, terrain, and world generation remain in use. The altitude threshold and client visuals require in-game verification.
+
 ## Remaining engineering milestones
 
 1. **True multistage rockets**
@@ -25,7 +34,10 @@
    - Avoid hard-coded single-engine and single-fuel values.
 4. **Flight computer**
    - Add vertical and horizontal speed, acceleration, stage indicators, launch countdown, and engine ignition state.
-5. **Testing and release**
+5. **Space world and celestial bodies**
+   - Decide between a dedicated space dimension and destination bodies with separate terrain.
+   - Add stars/space sky rendering, atmosphere transitions, and world-specific gravity without relying only on altitude.
+6. **Testing and release**
    - Keep the automated Forge build green.
    - Test launch, controls, staging, item consumption, save/load, and multiplayer on Minecraft 1.20.1 / Forge 47.2.0.
    - Verify model alignment, textures, and rendering in-game.
