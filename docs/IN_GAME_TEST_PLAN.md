@@ -67,3 +67,12 @@ Record the Minecraft version, Forge version, reproduction steps, and relevant la
 - Run `/earth` and confirm return to the Overworld at safe height.
 - Test full suit and oxygen consumption in the Moon dimension, and check reduced gravity for both player and rocket.
 - Check server startup logs for dimension JSON/codec errors. These checks require actual Minecraft testing; CI alone does not confirm the dimension loads correctly.
+
+
+## Smooth orbit transition and square Earth
+
+- Ascend through Y=120 to Y=320 and check that fog darkens gradually rather than switching abruptly.
+- Confirm stars progressively appear as altitude increases above Y=200.
+- At Y=320 and above, verify the HUD changes to the orbit label and draws a square Earth graphic.
+- Descend below the transition range and confirm the star field and orbital label disappear.
+- Verify the square Earth graphic is a HUD prototype; it is not yet a physical 3D planet in the world.
