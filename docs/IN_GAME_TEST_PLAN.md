@@ -44,3 +44,14 @@ Use Minecraft Java 1.20.1, Forge 47.2.0, and Java 17. These checks must be run i
 - [ ] No repeated exceptions appear in the client or server logs.
 
 Record the Minecraft version, Forge version, reproduction steps, and relevant latest.log excerpt for every failure.
+
+
+## Space environment checks
+
+- Ascend above Y=200 and confirm the space status HUD appears.
+- Check that the distant fog darkens while the camera is not underwater or in another fluid.
+- Compare airborne falling at ground level and in the space-altitude zone to verify reduced gravity.
+- Confirm the fall-distance reset does not cause unexpected behavior when returning to the ground.
+- Test full-suit survival, oxygen drain, empty-tank damage, and refill after descending below Y=200.
+- Confirm normal fog, gravity, and HUD behavior return below the altitude threshold.
+- These checks must be performed in Minecraft; CI compilation alone does not verify rendering or physics.
