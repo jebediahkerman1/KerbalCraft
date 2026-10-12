@@ -202,11 +202,13 @@ public class RocketEntity extends Entity {
             }
 
             double altitude = getY();
-            boolean inAtmosphere = altitude < 180.0D;
+            boolean hasAtmosphere = level().dimension() == Level.OVERWORLD;
+            boolean inAtmosphere = hasAtmosphere && altitude < 180.0D;
             double atmosphericDrag = inAtmosphere
                     ? 0.985D + Math.max(0.0D, altitude) / 180.0D * 0.010D
                     : 0.995D;
-            velocity = velocity.add(0.0D, -GRAVITY, 0.0D).scale(atmosphericDrag);
+            double localGravity = hasAtmosphere ? GRAVITY : GRAVITY * 0.165D;
+            velocity = velocity.add(0.0D, -localGravity, 0.0D).scale(atmosphericDrag);
             setDeltaMovement(velocity);
 
             move(MoverType.SELF, velocity);
@@ -226,7 +228,8 @@ public class RocketEntity extends Entity {
 
         Vec3 velocity = getDeltaMovement();
         double altitude = getY();
-        if (level().isClientSide && altitude >= 60.0D && altitude <= 180.0D
+        if (level().isClientSide && level().dimension() == Level.OVERWORLD
+                && altitude >= 60.0D && altitude <= 180.0D
                 && velocity.lengthSqr() > 0.36D) {
             Vec3 heatTrail = position().subtract(velocity.normalize().scale(1.0D));
             if (random.nextInt(2) == 0) {
