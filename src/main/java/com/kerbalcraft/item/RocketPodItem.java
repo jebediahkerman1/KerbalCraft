@@ -30,9 +30,9 @@ public class RocketPodItem extends Item {
 
         Inventory inventory = player.getInventory();
         int engineSlot = findSlot(inventory, ModItems.ROCKET_ENGINE.get());
-        int tankSlot = findSlot(inventory, ModItems.FUEL_TANK.get());
+        int tankCount = countItems(inventory, ModItems.FUEL_TANK.get());
 
-        if (engineSlot < 0 || tankSlot < 0) {
+        if (engineSlot < 0 || tankCount < 0 || tankCount == 0) {
             player.displayClientMessage(Component.literal(
                     "Rocket assembly needs a Rocket Engine and a Fuel Tank.")
                     .withStyle(ChatFormatting.RED), true);
@@ -48,7 +48,7 @@ public class RocketPodItem extends Item {
 
         if (!player.getAbilities().instabuild) {
             consumeOne(inventory, engineSlot);
-            consumeOne(inventory, tankSlot);
+            consumeOne(inventory, findSlot(inventory, ModItems.FUEL_TANK.get()));
             if (hasNose) {
                 consumeOne(inventory, findSlot(inventory, ModItems.NOSE_CONE.get()));
             }
@@ -66,15 +66,26 @@ public class RocketPodItem extends Item {
 
         Vec3 spawn = player.position().add(look.scale(1.6D)).add(0.0D, 1.1D, 0.0D);
         rocket.moveTo(spawn.x, spawn.y, spawn.z, player.getYRot(), player.getXRot());
-        rocket.configure(20 * 10, hasNose, hasDecoupler, look);
+        rocket.configure(20 * 10 * tankCount, hasNose, hasDecoupler, look);
         rocket.setDeltaMovement(look.scale(0.25D));
         level.addFreshEntity(rocket);
 
         serverPlayer.displayClientMessage(Component.literal(
-                "LIFTOFF! Fuel: 10 seconds. Engine thrust is active.")
+                "LIFTOFF! Fuel: " + (tankCount * 10) + " seconds. Engine thrust is active.")
                 .withStyle(ChatFormatting.GREEN), true);
 
         return InteractionResultHolder.sidedSuccess(podStack, false);
+    }
+
+    private static int countItems(Inventory inventory, Item item) {
+        int count = 0;
+        for (int slot = 0; slot < inventory.getContainerSize(); slot++) {
+            ItemStack stack = inventory.getItem(slot);
+            if (stack.is(item)) {
+                count += stack.getCount();
+            }
+        }
+        return count;
     }
 
     private static int findSlot(Inventory inventory, Item item) {
