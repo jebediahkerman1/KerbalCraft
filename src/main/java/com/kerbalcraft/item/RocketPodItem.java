@@ -48,7 +48,7 @@ public class RocketPodItem extends Item {
 
         if (!player.getAbilities().instabuild) {
             consumeOne(inventory, engineSlot);
-            consumeOne(inventory, findSlot(inventory, ModItems.FUEL_TANK.get()));
+            consumeAll(inventory, ModItems.FUEL_TANK.get());
             if (hasNose) {
                 consumeOne(inventory, findSlot(inventory, ModItems.NOSE_CONE.get()));
             }
@@ -66,7 +66,7 @@ public class RocketPodItem extends Item {
 
         Vec3 spawn = player.position().add(look.scale(1.6D)).add(0.0D, 1.1D, 0.0D);
         rocket.moveTo(spawn.x, spawn.y, spawn.z, player.getYRot(), player.getXRot());
-        rocket.configure(20 * 10 * tankCount, hasNose, hasDecoupler, look);
+        rocket.configure(20 * 10 * tankCount, tankCount, hasNose, hasDecoupler, look);
         rocket.setDeltaMovement(look.scale(0.25D));
         level.addFreshEntity(rocket);
 
@@ -95,6 +95,15 @@ public class RocketPodItem extends Item {
             }
         }
         return -1;
+    }
+
+    private static void consumeAll(Inventory inventory, Item item) {
+        for (int slot = inventory.getContainerSize() - 1; slot >= 0; slot--) {
+            ItemStack stack = inventory.getItem(slot);
+            if (stack.is(item)) {
+                inventory.removeItem(slot, stack.getCount());
+            }
+        }
     }
 
     private static void consumeOne(Inventory inventory, int slot) {
