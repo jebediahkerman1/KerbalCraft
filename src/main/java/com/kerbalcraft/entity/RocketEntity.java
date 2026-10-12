@@ -18,6 +18,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
 
+import java.util.Optional;
 import java.util.UUID;
 
 public class RocketEntity extends Entity {
@@ -31,6 +32,8 @@ public class RocketEntity extends Entity {
             SynchedEntityData.defineId(RocketEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Float> THROTTLE =
             SynchedEntityData.defineId(RocketEntity.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Optional<UUID>> OWNER =
+            SynchedEntityData.defineId(RocketEntity.class, EntityDataSerializers.OPTIONAL_UUID);
 
     private Vec3 thrustDirection = new Vec3(0.0D, 1.0D, 0.0D);
     private UUID ownerId;
@@ -56,6 +59,11 @@ public class RocketEntity extends Entity {
 
     public void setOwner(UUID ownerId) {
         this.ownerId = ownerId;
+        entityData.set(OWNER, Optional.ofNullable(ownerId));
+    }
+
+    public boolean isOwnedBy(UUID candidate) {
+        return candidate != null && entityData.get(OWNER).filter(candidate::equals).isPresent();
     }
 
     public int getFuelTicks() {
@@ -148,6 +156,7 @@ public class RocketEntity extends Entity {
         entityData.define(HAS_NOSE, false);
         entityData.define(HAS_DECOUPLER, false);
         entityData.define(THROTTLE, 1.0F);
+        entityData.define(OWNER, Optional.empty());
     }
 
     @Override
@@ -197,6 +206,10 @@ public class RocketEntity extends Entity {
         entityData.set(THROTTLE, tag.contains("Throttle") ? tag.getFloat("Throttle") : 1.0F);
         if (tag.hasUUID("Owner")) {
             ownerId = tag.getUUID("Owner");
+            entityData.set(OWNER, Optional.of(ownerId));
+        } else {
+            ownerId = null;
+            entityData.set(OWNER, Optional.empty());
         }
         if (tag.contains("ThrustX")) {
             Vec3 loadedDirection = new Vec3(tag.getDouble("ThrustX"), tag.getDouble("ThrustY"),
