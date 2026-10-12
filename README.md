@@ -36,14 +36,16 @@ Press **X** with a decoupler and at least two fuel tanks to split the rocket int
 
 - Craft an Air Tank from a Space Suit chestplate and a bucket, then equip it in the chest slot.
 - Equip the Space Helmet with the Air Tank to breathe underwater for up to five minutes; the tank refills in breathable air.
-- At Y=200 and above, the player enters the mod's space-altitude environment: low gravity, near-black distant fog, and an on-screen altitude/status indicator.
+- At Y=200 and above, the player enters the mod's space-altitude environment: reduced gravity, near-black distant fog, a star overlay, and an on-screen altitude/status indicator.
+- Rockets experience extra atmospheric drag during descent in the Overworld and produce flame/smoke re-entry effects at high speed between Y=60 and Y=180.
 - Surviving there requires the Space Helmet, Air Tank, Space Suit Leggings, and Space Suit Boots together.
 - Oxygen drains while in the space-altitude zone. An incomplete suit or an empty tank causes damage; the oxygen HUD shows the tank's remaining percentage.
-- This is currently an altitude-based space zone, not a separate dimension; the Overworld terrain and sky are still used.
+- The mod includes a basic Moon dimension with a flat rocky/gravel surface and a dark, starry sky. It is an early prototype, not a realistic lunar landscape.
+- Operators can use `/moon` to travel to the Moon and `/earth` to return to the Overworld. These commands require operator permission.
 
 ## Current limitations
 
-This is still an early flight prototype. Parts are assembled from inventory rather than snapped together in a construction UI. Flight handling is intentionally simple, and the mod has not yet been verified in an actual Minecraft session or multiplayer server. A successful CI build checks compilation; it does not replace in-game testing.
+This is still an early flight prototype. Parts are assembled from inventory rather than snapped together in a construction UI. Atmospheric re-entry currently uses simplified drag and visual particles, not a full heat-shield or thermal-damage simulation. The Moon is a flat prototype surface rather than a cratered lunar world. The mod has not yet been verified in an actual Minecraft session or multiplayer server. A successful CI build checks compilation; it does not replace in-game testing.
 
 ## Target environment
 
