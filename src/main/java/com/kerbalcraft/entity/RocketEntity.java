@@ -203,11 +203,17 @@ public class RocketEntity extends Entity {
 
             double altitude = getY();
             boolean hasAtmosphere = level().dimension() == Level.OVERWORLD;
-            boolean inAtmosphere = hasAtmosphere && altitude < 180.0D;
-            double atmosphericDrag = inAtmosphere
-                    ? 0.985D + Math.max(0.0D, altitude) / 180.0D * 0.010D
-                    : 0.995D;
-            double localGravity = hasAtmosphere ? GRAVITY : GRAVITY * 0.165D;
+            double atmosphereBlend = hasAtmosphere
+                    ? Math.max(0.0D, Math.min(1.0D, altitude / 320.0D))
+                    : 0.0D;
+            // Drag fades away gradually on the way up; high-altitude flight keeps its momentum.
+            double atmosphericDrag = hasAtmosphere
+                    ? 0.985D + atmosphereBlend * 0.015D
+                    : 1.0D;
+            // Effective gravity smoothly weakens through the atmosphere-to-orbit transition.
+            double localGravity = hasAtmosphere
+                    ? GRAVITY * (1.0D - atmosphereBlend * 0.92D)
+                    : GRAVITY * 0.165D;
             velocity = velocity.add(0.0D, -localGravity, 0.0D).scale(atmosphericDrag);
             setDeltaMovement(velocity);
 
