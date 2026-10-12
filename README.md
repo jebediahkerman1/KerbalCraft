@@ -36,7 +36,7 @@ Press **X** with a decoupler and at least two fuel tanks to split the rocket int
 
 - Craft an Air Tank from a Space Suit chestplate and a bucket, then equip it in the chest slot.
 - Equip the Space Helmet with the Air Tank to breathe underwater for up to five minutes; the tank refills in breathable air.
-- At Y=200 and above, the player enters the mod's space-altitude environment: reduced gravity, near-black distant fog, a star overlay, and an on-screen altitude/status indicator.
+- At Y=200 and above, the player enters the mod's space-altitude environment: reduced gravity, a gradual atmosphere-to-space fog transition, stars that fade in with altitude, and an on-screen altitude/status indicator. At Y=320 and above, the HUD marks orbit and shows a deliberately square, blocky Earth graphic.
 - Rockets experience extra atmospheric drag during descent in the Overworld and produce flame/smoke re-entry effects at high speed between Y=60 and Y=180.
 - Surviving there requires the Space Helmet, Air Tank, Space Suit Leggings, and Space Suit Boots together.
 - Oxygen drains while in the space-altitude zone. An incomplete suit or an empty tank causes damage; the oxygen HUD shows the tank's remaining percentage.
@@ -72,9 +72,9 @@ The modpack is not yet an installable launcher export; it needs a released Kerba
 
 ## Next milestones
 
-1. Verify the new high-altitude space environment in-game: low gravity, fog tint, status HUD, and suit/oxygen survival.
+1. Verify the smooth atmosphere-to-orbit transition, star fade-in, square Earth HUD graphic, low gravity, and suit/oxygen survival in-game.
 2. Build a proper assembly stand/editor for physically arranging parts.
 3. Add true multi-stage engines with independent fuel and ignition.
 4. Improve part-specific fuel capacity, thrust, aerodynamic drag, and landing behavior.
-5. Add a separate space dimension or celestial destinations after the altitude zone is stable.
+5. Improve actual orbital flight dynamics and replace the square Earth HUD graphic with a world-space Earth view.
 6. Test saving/loading, dedicated servers, multiplayer replication, and in-game visuals.
