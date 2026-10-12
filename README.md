@@ -2,7 +2,7 @@
 
 A Minecraft Java 1.20.1 Forge mod inspired by Kerbal Space Program.
 
-## Current prototype: assemble and launch
+## Current prototype: assemble and fly
 
 The mod registers five rocket parts in the Ingredients creative tab:
 
@@ -15,13 +15,26 @@ The mod registers five rocket parts in the Ingredients creative tab:
 ### Launching a rocket
 
 1. Obtain a Command Pod, at least one Fuel Tank, and a Rocket Engine.
-2. Optional: bring a Nose Cone and Decoupler to include them in the rocket's visual stack.
+2. Optional: bring a Nose Cone and Decoupler to include them in the rocket.
 3. Hold the Command Pod and right-click.
 4. In Survival, the Command Pod, engine, optional parts, and all carried fuel tanks are consumed to assemble the rocket. Creative mode preserves parts.
-5. The rocket launches in the direction you're looking. Each fuel tank adds about 10 seconds of engine burn.
-6. When a rocket is nearby, the HUD displays altitude, speed, fuel time, and tank count.
+5. The rocket launches in the direction you're looking. Each fuel tank provides about 10 seconds of engine burn.
+6. When a rocket is nearby, the HUD shows altitude, speed, fuel time, tank count, and throttle.
 
-This is an early flight prototype: parts are assembled from inventory rather than snapped together in a construction UI. Steering, player-controlled throttle, actual staging/decoupling, and persistent rocket design data remain future work.
+### Flight controls
+
+The controls target the nearest rocket within 96 blocks. The server validates that the player who launched it is the one controlling it.
+
+- **R** — increase throttle
+- **F** — decrease throttle
+- **Arrow keys** — steer and pitch the rocket
+- **X** — activate the decoupler stage
+
+The first staging implementation ejects one fuel-tank item and removes the corresponding fuel while the rocket has a decoupler, more than one tank, and fuel remaining. Full physical separation into independent upper and lower stages is still planned.
+
+## Current limitations
+
+This is still an early flight prototype. Parts are assembled from inventory rather than snapped together in a construction UI. Flight handling is intentionally simple, and the mod has not yet been verified in an actual Minecraft session or multiplayer server. A successful CI build checks compilation; it does not replace in-game testing.
 
 ## Target environment
 
@@ -42,13 +55,14 @@ The compiled mod jar will be in `build/libs/`. GitHub Actions runs a build on pu
 
 ## Modpack planning
 
-See [docs/MODPACK.md](docs/MODPACK.md) for the Forge baseline, optional supporting mods, and release checklist. See [docs/FLIGHT_ROADMAP.md](docs/FLIGHT_ROADMAP.md) for planned flight systems.
+See [docs/MODPACK.md](docs/MODPACK.md) for the Forge baseline, optional supporting mods, and release checklist. See [docs/FLIGHT_ROADMAP.md](docs/FLIGHT_ROADMAP.md) for remaining flight systems.
 
 The modpack is not yet an installable launcher export; it needs a released KerbalCraft jar and pinned, tested supporting-mod versions.
 
 ## Next milestones
 
-1. Add server-validated steering, throttle, and staging controls.
-2. Add a proper assembly stand/editor for physically arranging parts.
-3. Improve fuel properties, thrust, aerodynamic drag, and landing behavior.
-4. Test saving/loading and multiplayer replication.
+1. Build a proper assembly stand/editor for physically arranging parts.
+2. Separate rocket stages into independent entities and transfer velocity correctly.
+3. Improve part-specific fuel capacity, thrust, aerodynamic drag, and landing behavior.
+4. Add launch countdown, engine ignition, and richer flight telemetry.
+5. Test saving/loading, dedicated servers, multiplayer replication, and in-game visuals.
