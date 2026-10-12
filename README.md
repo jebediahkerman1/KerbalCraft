@@ -36,8 +36,10 @@ Press **X** with a decoupler and at least two fuel tanks to split the rocket int
 
 - Craft an Air Tank from a Space Suit chestplate and a bucket, then equip it in the chest slot.
 - Equip the Space Helmet with the Air Tank to breathe underwater for up to five minutes; the tank refills in breathable air.
-- At Y=200 and above, the player enters the mod's space-altitude zone. Surviving there requires the Space Helmet, Air Tank, Space Suit Leggings, and Space Suit Boots together.
+- At Y=200 and above, the player enters the mod's space-altitude environment: low gravity, near-black distant fog, and an on-screen altitude/status indicator.
+- Surviving there requires the Space Helmet, Air Tank, Space Suit Leggings, and Space Suit Boots together.
 - Oxygen drains while in the space-altitude zone. An incomplete suit or an empty tank causes damage; the oxygen HUD shows the tank's remaining percentage.
+- This is currently an altitude-based space zone, not a separate dimension; the Overworld terrain and sky are still used.
 
 ## Current limitations
 
@@ -68,8 +70,9 @@ The modpack is not yet an installable launcher export; it needs a released Kerba
 
 ## Next milestones
 
-1. Build a proper assembly stand/editor for physically arranging parts.
-2. Separate rocket stages into independent entities and transfer velocity correctly.
-3. Improve part-specific fuel capacity, thrust, aerodynamic drag, and landing behavior.
-4. Add launch countdown, engine ignition, and richer flight telemetry.
-5. Test saving/loading, dedicated servers, multiplayer replication, and in-game visuals.
+1. Verify the new high-altitude space environment in-game: low gravity, fog tint, status HUD, and suit/oxygen survival.
+2. Build a proper assembly stand/editor for physically arranging parts.
+3. Add true multi-stage engines with independent fuel and ignition.
+4. Improve part-specific fuel capacity, thrust, aerodynamic drag, and landing behavior.
+5. Add a separate space dimension or celestial destinations after the altitude zone is stable.
+6. Test saving/loading, dedicated servers, multiplayer replication, and in-game visuals.
