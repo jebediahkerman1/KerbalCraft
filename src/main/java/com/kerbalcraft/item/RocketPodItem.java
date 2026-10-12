@@ -33,7 +33,7 @@ public class RocketPodItem extends Item {
         int srbSlot = findSlot(inventory, ModItems.SRB.get());
         boolean hasSrb = srbSlot >= 0;
         int tankCount = countItems(inventory, ModItems.FUEL_TANK.get()) + (hasSrb ? 1 : 0);
-        int propulsionSlot = engineSlot >= 0 ? engineSlot : srbSlot;
+        int propulsionSlot = hasSrb ? srbSlot : engineSlot;
 
         if (propulsionSlot < 0 || tankCount == 0) {
             player.displayClientMessage(Component.literal(
