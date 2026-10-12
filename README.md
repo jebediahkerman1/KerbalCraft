@@ -37,15 +37,16 @@ Press **X** with a decoupler and at least two fuel tanks to split the rocket int
 - Craft an Air Tank from a Space Suit chestplate and a bucket, then equip it in the chest slot.
 - Equip the Space Helmet with the Air Tank to breathe underwater for up to five minutes; the tank refills in breathable air.
 - At Y=200 and above, the player enters the mod's space-altitude environment: reduced gravity, a gradual atmosphere-to-space fog transition, stars that fade in with altitude, and an on-screen altitude/status indicator. At Y=320 and above, the HUD marks orbit and shows a deliberately square, blocky Earth graphic.
-- Rocket drag and effective gravity transition gradually with altitude in the Overworld, reducing drag and gravity toward the orbit zone. Fast descents between Y=60 and Y=180 produce flame/smoke re-entry effects.
+- Rocket drag scales with estimated atmospheric density and speed. Above Y=320, rockets use inverse-square gravity around a saved local launch-area reference, allowing lateral velocity to curve. Telemetry estimates vertical apoapsis and shows vertical/horizontal speed plus insertion/coast state. Fast descents between Y=60 and Y=180 produce flame/smoke re-entry effects.
+- At orbital altitude, a blocky blue cube Earth with green landmasses is rendered as a world-space object in front of the camera. This remains a visual prototype, not a planet with terrain or collision.
 - Surviving there requires the Space Helmet, Air Tank, Space Suit Leggings, and Space Suit Boots together.
 - Oxygen drains while in the space-altitude zone. An incomplete suit or an empty tank causes damage; the oxygen HUD shows the tank's remaining percentage.
-- The mod includes a basic Moon dimension with a flat rocky/gravel surface and a dark, starry sky. It is an early prototype, not a realistic lunar landscape.
+- The Moon dimension now carves deterministic bowl-shaped craters into its rocky/gravel base and has a dark, starry sky. This is still a simple crater pass over flat terrain, not full lunar biome generation.
 - Operators can use `/moon` to travel to the Moon and `/earth` to return to the Overworld. These commands require operator permission.
 
 ## Current limitations
 
-This is still an early flight prototype. Parts are assembled from inventory rather than snapped together in a construction UI. Atmospheric re-entry currently uses simplified drag and visual particles, not a full heat-shield or thermal-damage simulation. The Moon is a flat prototype surface rather than a cratered lunar world. The mod has not yet been verified in an actual Minecraft session or multiplayer server. A successful CI build checks compilation; it does not replace in-game testing.
+This is still an early flight prototype. Parts are assembled from inventory rather than snapped together in a construction UI. Orbital gravity is a simplified inverse-square model around a local launch-area reference, not a full planetary coordinate system or stable-orbit autopilot. The world-space cube Earth is camera-relative and has no terrain/collision. Moon craters are carved into a flat base rather than generated with full terrain noise. Re-entry has no thermal-damage simulation. The mod has not been verified in an actual Minecraft session or multiplayer server. CI compilation does not replace in-game testing.
 
 ## Target environment
 
