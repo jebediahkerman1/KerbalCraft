@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "minecraft:iron_chestplate" },
+    { "item": "minecraft:white_wool" }
+  ],
+  "result": {
+    "item": "kerbalcraft:space_suit",
+    "count": 1
+  }
+}
