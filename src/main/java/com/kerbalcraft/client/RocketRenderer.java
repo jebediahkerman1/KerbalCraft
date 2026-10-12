@@ -29,17 +29,24 @@ public class RocketRenderer extends EntityRenderer<RocketEntity> {
             renderPart(new ItemStack(ModItems.FUEL_TANK.get()), poseStack, buffer, packedLight,
                     0.2D - (i * 0.42D));
         }
-        renderPart(new ItemStack(ModItems.COMMAND_POD.get()), poseStack, buffer, packedLight,
-                0.85D);
-        renderPart(new ItemStack(ModItems.ROCKET_ENGINE.get()), poseStack, buffer, packedLight,
-                -0.55D - (Math.max(0, tankCount - 1) * 0.42D));
 
-        if (rocket.hasNoseCone()) {
-            renderPart(new ItemStack(ModItems.NOSE_CONE.get()), poseStack, buffer, packedLight, 1.25D);
-        }
-        if (rocket.hasDecoupler()) {
-            renderPart(new ItemStack(ModItems.DECOUPLER.get()), poseStack, buffer, packedLight,
-                    -0.45D - (Math.max(0, tankCount - 1) * 0.42D));
+        if (rocket.isStageDebris()) {
+            // A detached lower stage is just its fuel tanks and engine; it has no pod.
+            renderPart(new ItemStack(ModItems.ROCKET_ENGINE.get()), poseStack, buffer, packedLight,
+                    -0.55D - (Math.max(0, tankCount - 1) * 0.42D));
+        } else {
+            renderPart(new ItemStack(ModItems.COMMAND_POD.get()), poseStack, buffer, packedLight,
+                    0.85D);
+            renderPart(new ItemStack(ModItems.ROCKET_ENGINE.get()), poseStack, buffer, packedLight,
+                    -0.55D - (Math.max(0, tankCount - 1) * 0.42D));
+
+            if (rocket.hasNoseCone()) {
+                renderPart(new ItemStack(ModItems.NOSE_CONE.get()), poseStack, buffer, packedLight, 1.25D);
+            }
+            if (rocket.hasDecoupler()) {
+                renderPart(new ItemStack(ModItems.DECOUPLER.get()), poseStack, buffer, packedLight,
+                        -0.45D - (Math.max(0, tankCount - 1) * 0.42D));
+            }
         }
 
         poseStack.popPose();
