@@ -6,6 +6,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -36,7 +37,7 @@ public final class SpaceSuitEvents {
         boolean hasHelmetAndTank = helmet.is(ModItems.SPACE_HELMET.get())
                 && tank.is(ModItems.AIR_TANK.get());
         boolean inWater = player.isEyeInFluid(FluidTags.WATER);
-        boolean inSpace = player.getY() >= SPACE_ALTITUDE
+        boolean inSpace = (player.level().dimension() == Level.OVERWORLD && player.getY() >= SPACE_ALTITUDE)
                 || player.level().dimension().location().equals(MOON);
 
         // High altitude has a low-gravity environment. Counter part of vanilla gravity
@@ -69,6 +70,14 @@ public final class SpaceSuitEvents {
         if (needsOxygen && oxygen > 0) {
             oxygen--;
             tank.getOrCreateTag().putInt(OXYGEN_KEY, oxygen);
+            if (inSpace && oxygen == 1200 && player.tickCount % 20 == 0) {
+                player.displayClientMessage(Component.literal("OXYGEN LOW: 60 seconds remaining")
+                        .withStyle(net.minecraft.ChatFormatting.YELLOW), true);
+            }
+            if (inSpace && oxygen == 200 && player.tickCount % 20 == 0) {
+                player.displayClientMessage(Component.literal("CRITICAL OXYGEN: 10 seconds remaining")
+                        .withStyle(net.minecraft.ChatFormatting.RED), true);
+            }
             if (inWater) {
                 // Keep vanilla drowning disabled while oxygen is available.
                 player.setAirSupply(300);
