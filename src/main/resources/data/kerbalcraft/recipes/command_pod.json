@@ -1,19 +1,16 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    " IG",
-    "GCG",
-    "III"
+    "BBB",
+    "BSB",
+    "BBB"
   ],
   "key": {
-    "I": {
-      "item": "minecraft:iron_ingot"
+    "B": {
+      "item": "minecraft:iron_block"
     },
-    "G": {
-      "item": "minecraft:glass_pane"
-    },
-    "C": {
-      "item": "minecraft:compass"
+    "S": {
+      "item": "minecraft:iron_stairs"
     }
   },
   "result": {
