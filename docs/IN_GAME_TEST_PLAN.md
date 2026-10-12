@@ -55,3 +55,15 @@ Record the Minecraft version, Forge version, reproduction steps, and relevant la
 - Test full-suit survival, oxygen drain, empty-tank damage, and refill after descending below Y=200.
 - Confirm normal fog, gravity, and HUD behavior return below the altitude threshold.
 - These checks must be performed in Minecraft; CI compilation alone does not verify rendering or physics.
+
+
+## Atmospheric re-entry, stars, and Moon checks
+
+- Ascend above Y=200 in the Overworld and confirm the star overlay, space status, and low-gravity feel.
+- Descend through Y=180 to Y=60 at high speed in a rocket and check for increased drag plus flame/smoke re-entry particles.
+- Confirm re-entry effects do not appear while flying in the Moon dimension.
+- As an operator, run `/moon`; confirm the Moon dimension loads and the player arrives above the lunar surface.
+- Confirm the Moon has a dark starry sky and a flat stone/gravel surface for this prototype.
+- Run `/earth` and confirm return to the Overworld at safe height.
+- Test full suit and oxygen consumption in the Moon dimension, and check reduced gravity for both player and rocket.
+- Check server startup logs for dimension JSON/codec errors. These checks require actual Minecraft testing; CI alone does not confirm the dimension loads correctly.
