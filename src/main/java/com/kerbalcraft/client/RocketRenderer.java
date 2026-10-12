@@ -46,7 +46,7 @@ public class RocketRenderer extends EntityRenderer<RocketEntity> {
         poseStack.scale(1.15F, 1.15F, 1.15F);
         net.minecraft.client.Minecraft.getInstance().getItemRenderer().renderStatic(
                 stack, ItemDisplayContext.GROUND, packedLight, OverlayTexture.NO_OVERLAY,
-                poseStack, buffer, null, 0);
+                poseStack, buffer, net.minecraft.client.Minecraft.getInstance().level, 0);
         poseStack.popPose();
     }
 
