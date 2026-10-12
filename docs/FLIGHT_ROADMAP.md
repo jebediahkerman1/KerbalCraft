@@ -8,7 +8,7 @@
 - Basic thrust, fuel burn, gravity, and collision cleanup.
 - In-flight telemetry HUD with altitude, speed, fuel, tank count, throttle, and control hints.
 - Rocket model displays the fuel tanks included in the assembly.
-- Initial stage action ejects one fuel-tank item and removes 10 seconds of fuel, if a decoupler is present and multiple tanks remain.
+- Initial stage action ejects one fuel-tank item and removes 10 seconds of fuel, if a decoupler is present and multiple tanks remain, including after the fuel is depleted.
 
 ## Remaining engineering milestones
 
