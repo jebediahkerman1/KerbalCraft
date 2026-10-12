@@ -40,6 +40,8 @@ public class RocketEntity extends Entity {
 
     private Vec3 thrustDirection = new Vec3(0.0D, 1.0D, 0.0D);
     private UUID ownerId;
+    private double orbitCenterX;
+    private double orbitCenterZ;
     private long lastControlGameTime = Long.MIN_VALUE;
     private static final double THRUST = 0.055D;
     private static final double GRAVITY = 0.025D;
@@ -55,6 +57,8 @@ public class RocketEntity extends Entity {
         entityData.set(HAS_NOSE, hasNose);
         entityData.set(HAS_DECOUPLER, hasDecoupler);
         entityData.set(THROTTLE, 1.0F);
+        orbitCenterX = getX();
+        orbitCenterZ = getZ();
         if (direction != null && direction.lengthSqr() > 0.001D) {
             thrustDirection = direction.normalize();
         }
@@ -87,6 +91,11 @@ public class RocketEntity extends Entity {
 
     public boolean isStageDebris() {
         return entityData.get(STAGE_DEBRIS);
+    }
+
+    public void setOrbitCenter(double x, double z) {
+        orbitCenterX = x;
+        orbitCenterZ = z;
     }
 
     public void configureStageDebris(int tankCount, Vec3 inheritedVelocity) {
@@ -168,6 +177,7 @@ public class RocketEntity extends Entity {
         if (lowerStage != null) {
             lowerStage.moveTo(debrisPosition.x, debrisPosition.y, debrisPosition.z, getYRot(), getXRot());
             lowerStage.configureStageDebris(droppedTanks, debrisVelocity);
+            lowerStage.setOrbitCenter(orbitCenterX, orbitCenterZ);
             level().addFreshEntity(lowerStage);
         }
 
@@ -206,15 +216,26 @@ public class RocketEntity extends Entity {
             double atmosphereBlend = hasAtmosphere
                     ? Math.max(0.0D, Math.min(1.0D, altitude / 320.0D))
                     : 0.0D;
-            // Drag fades away gradually on the way up; high-altitude flight keeps its momentum.
-            double atmosphericDrag = hasAtmosphere
-                    ? 0.985D + atmosphereBlend * 0.015D
-                    : 1.0D;
-            // Effective gravity smoothly weakens through the atmosphere-to-orbit transition.
-            double localGravity = hasAtmosphere
-                    ? GRAVITY * (1.0D - atmosphereBlend * 0.92D)
-                    : GRAVITY * 0.165D;
-            velocity = velocity.add(0.0D, -localGravity, 0.0D).scale(atmosphericDrag);
+            // Density falls quadratically through the atmosphere; drag depends on speed.
+            double density = hasAtmosphere ? Math.pow(1.0D - atmosphereBlend, 2.0D) : 0.0D;
+            double speed = velocity.length();
+            double drag = Math.min(0.08D, density * speed * 0.0015D);
+            velocity = velocity.scale(1.0D - drag);
+
+            if (hasAtmosphere && altitude >= 320.0D) {
+                // Above the atmosphere use inverse-square gravity around the launch area's
+                // local planet reference. This lets lateral velocity curve instead of
+                // treating "space" as a zero-gravity vertical tunnel.
+                Vec3 radial = new Vec3(getX() - orbitCenterX, getY() + 64.0D, getZ() - orbitCenterZ);
+                double radius = Math.max(128.0D, radial.length());
+                double orbitalGravity = (GRAVITY * 128.0D * 128.0D) / (radius * radius);
+                velocity = velocity.subtract(radial.normalize().scale(orbitalGravity));
+            } else {
+                double localGravity = hasAtmosphere
+                        ? GRAVITY * (1.0D - atmosphereBlend * 0.92D)
+                        : GRAVITY * 0.165D;
+                velocity = velocity.add(0.0D, -localGravity, 0.0D);
+            }
             setDeltaMovement(velocity);
 
             move(MoverType.SELF, velocity);
@@ -276,6 +297,8 @@ public class RocketEntity extends Entity {
         entityData.set(HAS_DECOUPLER, tag.getBoolean("HasDecoupler"));
         entityData.set(STAGE_DEBRIS, tag.getBoolean("StageDebris"));
         entityData.set(THROTTLE, tag.contains("Throttle") ? tag.getFloat("Throttle") : 1.0F);
+        orbitCenterX = tag.contains("OrbitCenterX") ? tag.getDouble("OrbitCenterX") : getX();
+        orbitCenterZ = tag.contains("OrbitCenterZ") ? tag.getDouble("OrbitCenterZ") : getZ();
         if (tag.hasUUID("Owner")) {
             ownerId = tag.getUUID("Owner");
             entityData.set(OWNER, Optional.of(ownerId));
@@ -300,6 +323,8 @@ public class RocketEntity extends Entity {
         tag.putBoolean("HasDecoupler", hasDecoupler());
         tag.putBoolean("StageDebris", isStageDebris());
         tag.putFloat("Throttle", getThrottle());
+        tag.putDouble("OrbitCenterX", orbitCenterX);
+        tag.putDouble("OrbitCenterZ", orbitCenterZ);
         if (ownerId != null) {
             tag.putUUID("Owner", ownerId);
         }
