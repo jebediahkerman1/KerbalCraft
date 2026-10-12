@@ -2,15 +2,11 @@ package com.kerbalcraft.event;
 
 import com.kerbalcraft.KerbalCraft;
 import com.kerbalcraft.registry.ModItems;
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -18,54 +14,63 @@ import net.minecraftforge.fml.common.Mod;
 public final class SpaceSuitEvents {
     private static final String OXYGEN_KEY = "KerbalCraftOxygenTicks";
     public static final int MAX_OXYGEN_TICKS = 6000; // Five minutes at 20 ticks per second.
+    private static final double SPACE_ALTITUDE = 200.0D;
 
     private SpaceSuitEvents() {
     }
 
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
-        if (event.phase != TickEvent.Phase.END || event.player.level().isClientSide) {
+        if (event.phase != TickEvent.Phase.END || event.player.level().isClientSide
+                || !(event.player instanceof ServerPlayer player)) {
             return;
         }
 
-        ServerPlayer player = (ServerPlayer) event.player;
         ItemStack helmet = player.getItemBySlot(EquipmentSlot.HEAD);
         ItemStack tank = player.getItemBySlot(EquipmentSlot.CHEST);
-        boolean hasSpaceGear = helmet.is(ModItems.SPACE_HELMET.get())
-                && tank.is(ModItems.AIR_TANK.get());
+        ItemStack leggings = player.getItemBySlot(EquipmentSlot.LEGS);
+        ItemStack boots = player.getItemBySlot(EquipmentSlot.FEET);
 
-        if (!hasSpaceGear) {
+        boolean hasHelmetAndTank = helmet.is(ModItems.SPACE_HELMET.get())
+                && tank.is(ModItems.AIR_TANK.get());
+        boolean inWater = player.isEyeInFluid(FluidTags.WATER);
+        boolean inSpace = player.getY() >= SPACE_ALTITUDE;
+        boolean fullSpaceSuit = hasHelmetAndTank
+                && leggings.is(ModItems.SPACE_PANTS.get())
+                && boots.is(ModItems.SPACE_BOOTS.get());
+
+        if (inSpace && !fullSpaceSuit) {
+            // Space has no breathable atmosphere: an incomplete suit cannot protect the player.
+            if (player.tickCount % 20 == 0) {
+                player.hurt(player.damageSources().generic(), 2.0F);
+            }
+            return;
+        }
+
+        if (!hasHelmetAndTank) {
             return;
         }
 
         int oxygen = tank.hasTag() && tank.getTag().contains(OXYGEN_KEY)
                 ? tank.getTag().getInt(OXYGEN_KEY) : MAX_OXYGEN_TICKS;
+        boolean needsOxygen = inWater || inSpace;
 
-        if (player.isEyeInFluid(FluidTags.WATER)) {
-            if (oxygen > 0) {
-                oxygen--;
-                tank.getOrCreateTag().putInt(OXYGEN_KEY, oxygen);
-                // Keep the vanilla drowning timer full while this tank has oxygen.
+        if (needsOxygen && oxygen > 0) {
+            oxygen--;
+            tank.getOrCreateTag().putInt(OXYGEN_KEY, oxygen);
+            if (inWater) {
+                // Keep vanilla drowning disabled while oxygen is available.
                 player.setAirSupply(300);
             }
-        } else if (oxygen < MAX_OXYGEN_TICKS) {
-            // The tank refills when the player can breathe normally.
+        } else if (needsOxygen && oxygen <= 0) {
+            // Once the tank is empty, the player starts suffocating in space.
+            if (inSpace && player.tickCount % 20 == 0) {
+                player.hurt(player.damageSources().generic(), 2.0F);
+            }
+        } else if (!needsOxygen && oxygen < MAX_OXYGEN_TICKS) {
+            // Refill in breathable air, including below the space-altitude threshold.
             oxygen = Math.min(MAX_OXYGEN_TICKS, oxygen + 2);
             tank.getOrCreateTag().putInt(OXYGEN_KEY, oxygen);
-        }
-    }
-
-    @SubscribeEvent
-    public static void onPlayerClone(PlayerEvent.Clone event) {
-        // A respawned player keeps the oxygen amount stored on their equipped tank.
-        if (!event.isWasDeath()) {
-            return;
-        }
-        ItemStack oldTank = event.getOriginal().getItemBySlot(EquipmentSlot.CHEST);
-        ItemStack newTank = event.getEntity().getItemBySlot(EquipmentSlot.CHEST);
-        if (oldTank.is(ModItems.AIR_TANK.get()) && newTank.is(ModItems.AIR_TANK.get())
-                && oldTank.hasTag() && oldTank.getTag().contains(OXYGEN_KEY)) {
-            newTank.getOrCreateTag().putInt(OXYGEN_KEY, oldTank.getTag().getInt(OXYGEN_KEY));
         }
     }
 }
