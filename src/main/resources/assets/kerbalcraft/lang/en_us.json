@@ -3,5 +3,13 @@
   "item.kerbalcraft.fuel_tank": "Fuel Tank",
   "item.kerbalcraft.rocket_engine": "Rocket Engine",
   "item.kerbalcraft.nose_cone": "Nose Cone",
-  "item.kerbalcraft.decoupler": "Decoupler"
+  "item.kerbalcraft.decoupler": "Decoupler",
+  "key.categories.kerbalcraft": "KerbalCraft Rocket Controls",
+  "key.kerbalcraft.throttle_up": "Increase Throttle",
+  "key.kerbalcraft.throttle_down": "Decrease Throttle",
+  "key.kerbalcraft.stage": "Activate Stage",
+  "key.kerbalcraft.steer_left": "Steer Left",
+  "key.kerbalcraft.steer_right": "Steer Right",
+  "key.kerbalcraft.pitch_up": "Pitch Up",
+  "key.kerbalcraft.pitch_down": "Pitch Down"
 }
