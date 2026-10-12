@@ -32,6 +32,13 @@ The controls target the nearest rocket within 96 blocks. The server validates th
 
 The first staging implementation ejects one fuel-tank item and removes the corresponding fuel while the rocket has a decoupler and more than one tank (even after fuel is depleted). Full physical separation into independent upper and lower stages is still planned.
 
+### Space suit and oxygen
+
+- Craft an Air Tank from a Space Suit chestplate and a bucket, then equip it in the chest slot.
+- Equip the Space Helmet with the Air Tank to breathe underwater for up to five minutes; the tank refills in breathable air.
+- At Y=200 and above, the player enters the mod's space-altitude zone. Surviving there requires the Space Helmet, Air Tank, Space Suit Leggings, and Space Suit Boots together.
+- Oxygen drains while in the space-altitude zone. An incomplete suit or an empty tank causes damage; the oxygen HUD shows the tank's remaining percentage.
+
 ## Current limitations
 
 This is still an early flight prototype. Parts are assembled from inventory rather than snapped together in a construction UI. Flight handling is intentionally simple, and the mod has not yet been verified in an actual Minecraft session or multiplayer server. A successful CI build checks compilation; it does not replace in-game testing.
