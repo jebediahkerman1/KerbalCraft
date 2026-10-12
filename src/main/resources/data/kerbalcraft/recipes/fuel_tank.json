@@ -2,15 +2,15 @@
   "type": "minecraft:crafting_shaped",
   "pattern": [
     "III",
-    "ICI",
+    "ILI",
     "III"
   ],
   "key": {
     "I": {
       "item": "minecraft:iron_ingot"
     },
-    "C": {
-      "item": "minecraft:bucket"
+    "L": {
+      "item": "minecraft:lava_bucket"
     }
   },
   "result": {
