@@ -21,7 +21,7 @@
 
 ## Space environment prototype
 
-- The Overworld space-altitude zone begins at Y=200 and displays a star overlay and status HUD.
+- The Overworld space-altitude zone begins at Y=200; stars fade in progressively through the atmosphere-to-orbit transition, and the HUD labels orbit at Y=320 with a square Earth graphic.
 - High-altitude players receive reduced effective gravity and require the full suit/oxygen setup.
 - The Moon is defined as a custom dimension with a flat rocky surface and dark sky; `/moon` and `/earth` operator commands provide prototype travel.
 - Rockets use extra drag in the Overworld atmosphere and display flame/smoke particles during fast descent between Y=60 and Y=180.
@@ -44,7 +44,7 @@
    - Add vertical and horizontal speed, acceleration, stage indicators, launch countdown, and engine ignition state.
 5. **Improve Moon and space visuals**
    - Replace the flat lunar surface with cratered terrain and lunar materials.
-   - Replace the HUD star overlay with proper sky rendering and add a visible Earth/Moon horizon.
+   - Replace the HUD star overlay and square Earth graphic with proper sky rendering and a world-space Earth/Moon horizon.
    - Add safe landing/return systems and world-specific gravity tuning.
 6. **Testing and release**
    - Keep the automated Forge build green.
